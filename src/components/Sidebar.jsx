@@ -18,7 +18,7 @@ const Sidebar = () => {
 
   const SIDEBAR_LINKS = [
     { id: 1, path: "/", name: "Dashboard", icon: LuBox },
-    { id: 2, path: "/products", name: "Products", icon: AiOutlineProduct },
+    { id: 2, path: "/inventory", name: "inventory", icon: AiOutlineProduct },
     { id: 3, path: "/orders", name: "Orders", icon: FaOpencart },
     { id: 4, path: "/transactions", name: "Transactions", icon: GrTransaction },
     { id: 5, path: "/customers", name: "Customers", icon: AiOutlineCustomerService },
@@ -40,17 +40,7 @@ const Sidebar = () => {
         
     
     <div className="w-16 md:w-56 fixed left-0 top-0 z-10 h-screen border-r   px-4 bg-gray-300">
-      {/* logo */}
-      <center>
-      <div className="fluid-contianer mt-3 mb-3">
-        <img src="/logo_mini.svg" alt="logo" className="w-fit hidden md:flex" />
-        <img src="/logo_mini.svg" alt="logo" className="w-8 flex md:hidden" />
-      </div>
-      </center>
-      {/* logo */}
     <div className="">
-
-    
       {/* Navigation Links */}
       <ul className="mt-6 space-y-6">
         {SIDEBAR_LINKS.map((link, index) => (
@@ -75,12 +65,7 @@ const Sidebar = () => {
       </ul>
       {/* Navigation Links */}
 
-      <div className="w-full absolute bottom-5 left-0 px-4 py-2 cursor-pointer text-center">
-        <p className="flex items-center space-x-2 text-xs text-white py-2 px-5 bg-gradient-to-r from-indigo-500 to-violet-600 rounded-full">
-          <span>?</span>
-          <span className="hidden md:flex">Need Help</span>
-        </p>
-      </div>
+      
       </div>
     </div>
     

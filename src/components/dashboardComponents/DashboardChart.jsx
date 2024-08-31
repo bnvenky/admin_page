@@ -4,19 +4,20 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { getRevenue } from "../../API";
 
-// Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+// Register Chart.js components for a line chart
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 function DashboardChart() {
-  const [reveneuData, setReveneuData] = useState({
+  const [revenueData, setRevenueData] = useState({
     labels: [],
     datasets: [],
   });
@@ -24,24 +25,34 @@ function DashboardChart() {
   useEffect(() => {
     getRevenue().then((res) => {
       const labels = res.carts.map((cart) => {
-        return `User-${cart.userId}`;
+        return `Date-${new Date(cart.date).toLocaleDateString()}`;
       });
-      const data = res.carts.map((cart) => {
-        return cart.discountedTotal;
-      });
+      const salesData = res.carts.map((cart) => cart.discountedTotal);
+      const ordersData = res.carts.map((cart) => cart.total);
 
       const dataSource = {
         labels,
         datasets: [
           {
-            label: "Revenue",
-            data: data,
-            backgroundColor: "rgba(255, 0, 0, 1)",
+            label: "Sales",
+            data: salesData,
+            borderColor: "rgba(54, 162, 235, 1)",
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+            fill: true,
+            tension: 0.4, // For smooth curves
           },
+          {
+            label: "Orders",
+            data: ordersData,
+            borderColor: "rgba(255, 99, 132, 1)",
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            fill: true,
+            tension: 0.4, // For smooth curves
+          }
         ],
       };
 
-      setReveneuData(dataSource);
+      setRevenueData(dataSource);
     });
   }, []);
 
@@ -49,20 +60,24 @@ function DashboardChart() {
     responsive: true,
     plugins: {
       legend: {
-        position: "bottom",
+        position: "top",
       },
       title: {
         display: true,
-        text: "Order Revenue",
+        text: "Sales vs Orders",
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
       },
     },
   };
 
   return (
     <Card className="w-full bg-white shadow-lg rounded-lg p-6" style={{ width: "100%", height: "100%" }}>
-      <Bar options={options} data={reveneuData} />
+      <Line options={options} data={revenueData} />
     </Card>
-    
   );
 }
 
